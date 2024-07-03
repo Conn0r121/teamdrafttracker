@@ -37,7 +37,7 @@ jobs:
       - name: Zip Lambda Function
         run: |
           cd ${{ matrix.function-path }}
-          zip -r ../${{ matrix.function-path }}.zip .
+          zip -r ../${{ matrix.lambda-function.function-path }}.zip .
           cd -
 
       - name: Deploy to AWS Lambda
@@ -46,4 +46,4 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
-          aws lambda update-function-code --function-name ${{ matrix.function-name }} --zip-file fileb://${{ matrix.function-path }}.zip
+          aws lambda update-function-code --function-name ${{  matrix.lambda-function.function-name }} --zip-file fileb://${{  matrix.lambda-function.function-path }}.zip
