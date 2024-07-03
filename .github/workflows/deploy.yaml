@@ -32,13 +32,13 @@ jobs:
           cd ${{ matrix.lambda-function.function-path }}
           python -m pip install --upgrade pip
           pip install -r ../requirements.txt
-          cd -
+          cd ..
 
       - name: Zip Lambda Function
         run: |
-          cd ${{ matrix.function-path }}
-          zip -r ../${{ matrix.lambda-function.function-path }}.zip .
-          cd -
+          cd ${{ matrix.lambda-function.function-path }}
+          zip -r lambda_function.zip .
+          cd ..
 
       - name: Deploy to AWS Lambda
         env:
