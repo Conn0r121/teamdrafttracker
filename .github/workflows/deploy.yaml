@@ -12,13 +12,11 @@ jobs:
 
     strategy:
       matrix:
-        function-path:
-          - create_match
-          - delete_match
-
-        function-name:
-          - CreateMatch
-          - DeleteMatch
+        lambda-function:
+          - function-path: create_match
+            function-name: CreateMatch
+          - function-path: delete_match
+            function-name: DeleteMatch
 
     steps:
       - name: Checkout code
