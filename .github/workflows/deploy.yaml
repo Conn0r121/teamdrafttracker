@@ -1,0 +1,50 @@
+name: deploying all lambdas
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create_match:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        function-path:
+          - create_match
+          - delete_match
+
+        function-name:
+          - CreateMatch
+          - DeleteMatch
+
+    steps:
+      - name: Checkout code
+        uses: action/checkout@v2
+
+      - name: Set Up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ secrets.PYTHON_VERSION }}
+
+      - name: Install Dependencies
+        run: |
+          cd ${{ matrix.function-path }}
+          python -m pip install --upgrade pip
+          pip install -r ../requirements.txt
+          cd -
+
+      - name: Zip Lambda Function
+        run: |
+          cd ${{ matrix.function-path }}
+          zip -r ../${{ matrix.function-path }}.zip .
+          cd -
+
+      - name: Deploy to AWS Lambda
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+        run: |
+          aws lambda update-function-code --function-name ${{ matrix.function-name }} --zip-file fileb://${{ matrix.function-path }}.zip
