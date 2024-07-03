@@ -46,5 +46,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
-          echo ${{ secrets }}
+          echo ${{ secrets.AWS_ACCESS_KEY_ID }}
+          echo ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          echo ${{ secrets.AWS_REGION }}
           aws lambda update-function-code --function-name ${{  matrix.lambda-function.function-name }} --zip-file fileb://${{  matrix.lambda-function.function-path }}/lambda_function.zip
