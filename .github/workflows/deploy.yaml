@@ -49,4 +49,6 @@ jobs:
           echo ${{ secrets.AWS_ACCESS_KEY_ID }}
           echo ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           echo ${{ secrets.AWS_REGION }}
+          env
+          printenv
           aws lambda update-function-code --function-name ${{  matrix.lambda-function.function-name }} --zip-file fileb://${{  matrix.lambda-function.function-path }}/lambda_function.zip
